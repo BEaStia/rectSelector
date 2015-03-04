@@ -65,8 +65,11 @@ public class BaseField extends Sprite implements IField{
     }
 
     public function Redraw(event:MouseEvent):void {
+		//clearing and drawing background
         graphics.clear();
         RedrawBackGround(event);
+		
+		//for each pair of connected rectangles i draw line between its' centers.
         graphics.beginFill(connectionColor);
         for each(var pair:Object in pairs) {
             graphics.moveTo(pair.start.x + pair.start.width / 2, pair.start.y + pair.start.height / 2);
@@ -74,6 +77,7 @@ public class BaseField extends Sprite implements IField{
         }
         graphics.endFill();
 
+		//draw line from rectangle we are connecting now to a mouse point
         if (connectedRectangle != null) {
             graphics.beginFill(0x000000);
             graphics.moveTo(connectedRectangle.x + connectedRectangle.width / 2, connectedRectangle.y + connectedRectangle.height / 2);

@@ -15,22 +15,27 @@ public class Rect {
     public var y:int;
     public var width:int;
     public var height:int;
-    public var id:int;
-    public static var MAX_VALUE:int = 255;
+    public static var MAX_VALUE:int = 255; 
     public var connectedRects:Vector.<Rect>;
 
     public function Rect(_x:int, _y:int, _parent:Field) {
         super();
+		
+		//generate random color
         var red:int = int(Math.random()*MAX_VALUE);
         var green:int = int(Math.random()*MAX_VALUE);
         var blue:int = int(Math.random()*MAX_VALUE);
         bgColor = (red << 16 | green << 8 | blue);
+		
         width = defaultSize/2;
         height = defaultSize;
+		
+		//set its position to the center of pointer(firstly it points at left top corner
         x = _x - width/2;
-        y = _y - height/2;
+        y = _y - height / 2;
+		
+		//we don't have native parent - so let's create it
         parent = _parent;
-        id = Field.seed++;
         connectedRects = new Vector.<Rect>();
     }
 
