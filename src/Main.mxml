@@ -6,12 +6,14 @@
         import ru.sq.Field;
         import mx.core.UIComponent;
 
-        import ru.sq.FieldWithEmbedded;
-
         private function onCreate():void {
             var ref:UIComponent = new UIComponent();
-
-//            var child:FieldWithEmbedded = new FieldWithEmbedded();
+			/**
+			 * I made two variants of fields:
+				 * 1) I draw rectangles manually
+				 * 2) I draw rectangles by using them as Sprites and loading an asset.
+				 * In the code below i'm creating instance of first variant field and adding it to application
+			 */
             var child:Field = new Field();
             addElement(ref);
             ref.addChild(child);

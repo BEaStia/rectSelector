@@ -18,6 +18,8 @@ public class Field extends BaseField {
     }
 
     public override function onDoubleClick(event:MouseEvent):void {
+		
+		//check all rectangles if we're selecting one of them
         var count:int = rects.length;
         selectedRectangle = null;
         for (var i:int = 0; i < count; i++) {
@@ -27,19 +29,20 @@ public class Field extends BaseField {
             }
         }
 
-        trace("double clicked!");
+		//create new rectangle. Check whether we can place it
         var rect:Rect = new Rect(event.localX, event.localY, this);
         for each (var _rect:Rect in rects) {
             if ( rect.intersects(_rect)) {
                 return;
             }
         }
-        rects.push(rect);
-        Redraw(event);
+		rects.push(rect);
+		Redraw(event);
     }
 
     public override function Redraw(event:MouseEvent):void {
         super.Redraw(event);
+		//render all rects
         for each(var rect:Rect in rects) {
             rect.Render();
         }
@@ -48,17 +51,20 @@ public class Field extends BaseField {
     public override function onMouseDown(event:MouseEvent):void {
         var count:int = rects.length;
         selectedRectangle = null;
+		//find rectangle we intersect by mouse pointer.
         var rect:Rect = IntersectsPoint(event.localX, event.localY);
         if (rect != null) {
+			//if we're connecting rectangles - create a pair of them
             if (connectedRectangle && connectedRectangle != rect) {
                 pairs.push({start: rect, end: connectedRectangle});
                 connectedRectangle = null;
             } else
+			//or select it
                 selectedRectangle = rect;
         }
     }
 
-    public override function IntersectsPoint(_x:int, _y:int):* {
+	public override function IntersectsPoint(_x:int, _y:int):* {
         for (var i:int = 0; i < rects.length; i++) {
             if (rects[i].hitTestPoint(_x, _y)) {
                 return rects[i];
@@ -69,7 +75,7 @@ public class Field extends BaseField {
 
     public override function InterSectsAnyRectangle(rect:*):Boolean {
         for each(var _rect:Rect in rects) {
-            if ( rect.id != _rect.id && rect.intersects(_rect)) {
+            if ( rect != _rect && rect.intersects(_rect)) {
                 return true;
             }
         }
@@ -77,10 +83,13 @@ public class Field extends BaseField {
     }
 
     public override function onMouseUp(event:MouseEvent):void {
+		//unselect rectangle on mouse up
         selectedRectangle = null;
     }
 
     public override function onMouseMove(event:MouseEvent):void {
+		//on moving mouse createTweener.
+		// on tween update check whether we can go far. Otherwise - select previous position;
         if (selectedRectangle) {
             var previousX:int = selectedRectangle.x;
             var previousY:int = selectedRectangle.y;
