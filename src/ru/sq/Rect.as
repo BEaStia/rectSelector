@@ -19,16 +19,16 @@ public class Rect {
         super();
 
         //generate random color
-        var red:int = int(Math.random()*MAX_VALUE);
-        var green:int = int(Math.random()*MAX_VALUE);
-        var blue:int = int(Math.random()*MAX_VALUE);
+        var red:int = int(Math.random() * MAX_VALUE);
+        var green:int = int(Math.random() * MAX_VALUE);
+        var blue:int = int(Math.random() * MAX_VALUE);
         bgColor = (red << 16 | green << 8 | blue);
 
-        width = defaultSize/2;
+        width = defaultSize / 2;
         height = defaultSize;
 
         //set its position to the center of pointer(firstly it points at left top corner
-        x = _x - width/2;
+        x = _x - width / 2;
         y = _y - height / 2;
 
         //we don't have native parent - so let's create it
@@ -59,7 +59,7 @@ public class Rect {
     }
 
     public function intersects(rect:Rect):Boolean {
-        return  rect.x < this.x + this.width &&
+        return rect.x < this.x + this.width &&
                 this.x < rect.x + rect.width &&
                 rect.y < this.y + this.height &&
                 this.y < rect.y + rect.height;
