@@ -112,7 +112,7 @@ public class BaseField extends Sprite implements IField{
     }
 
     public function IntersectsPoint(_x:int ,_:int):* {
-        return
+        return null;
     }
 }
 }

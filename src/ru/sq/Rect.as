@@ -2,41 +2,37 @@
  * Created by Igor on 03.03.2015.
  */
 package ru.sq {
-import flash.display.Bitmap;
-import flash.display.Sprite;
-import flash.events.Event;
 
 public class Rect {
     private var bgColor:uint = 0xffb8ff;
     private var borderColor:uint = 0x666666;
     private var defaultSize:uint = 32;
     private var parent:Field;
+
     public var x:int;
     public var y:int;
     public var width:int;
     public var height:int;
-    public static var MAX_VALUE:int = 255; 
-    public var connectedRects:Vector.<Rect>;
+    public const MAX_VALUE:int = 255;
 
     public function Rect(_x:int, _y:int, _parent:Field) {
         super();
-		
-		//generate random color
+
+        //generate random color
         var red:int = int(Math.random()*MAX_VALUE);
         var green:int = int(Math.random()*MAX_VALUE);
         var blue:int = int(Math.random()*MAX_VALUE);
         bgColor = (red << 16 | green << 8 | blue);
-		
+
         width = defaultSize/2;
         height = defaultSize;
-		
-		//set its position to the center of pointer(firstly it points at left top corner
+
+        //set its position to the center of pointer(firstly it points at left top corner
         x = _x - width/2;
         y = _y - height / 2;
-		
-		//we don't have native parent - so let's create it
+
+        //we don't have native parent - so let's create it
         parent = _parent;
-        connectedRects = new Vector.<Rect>();
     }
 
     public function get right():int {
@@ -44,7 +40,7 @@ public class Rect {
     }
 
     public function get left():int {
-        return x+width;
+        return x + width;
     }
 
     public function get top():int {
@@ -52,7 +48,7 @@ public class Rect {
     }
 
     public function get bottom():int {
-        return y+height;
+        return y + height;
     }
 
     public function Render():void {
@@ -63,10 +59,10 @@ public class Rect {
     }
 
     public function intersects(rect:Rect):Boolean {
-        if (rect.x < this.x + this.width && this.x < rect.x + rect.width && rect.y < this.y + this.height)
-            return this.y < rect.y + rect.height;
-        else
-            return false;
+        return  rect.x < this.x + this.width &&
+                this.x < rect.x + rect.width &&
+                rect.y < this.y + this.height &&
+                this.y < rect.y + rect.height;
     }
 
     public function hitTestPoint(_x:int, _y:int):Boolean {

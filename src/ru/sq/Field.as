@@ -3,22 +3,22 @@
  */
 package ru.sq {
 import caurina.transitions.Tweener;
-
-import flash.display.Sprite;
-import flash.events.Event;
 import flash.events.MouseEvent;
 
 public class Field extends BaseField {
-
+    //rectangles at field
     private var rects:Vector.<Rect> = new Vector.<Rect>();
-    public static var seed:int = 0;
 
     public function Field() {
         super();
     }
 
     public override function onDoubleClick(event:MouseEvent):void {
-		
+        //reset connection
+        if (connectedRectangle) {
+            connectedRectangle = null;
+            return;
+        }
 		//check all rectangles if we're selecting one of them
         var count:int = rects.length;
         selectedRectangle = null;
@@ -48,15 +48,33 @@ public class Field extends BaseField {
         }
     }
 
+    private function CheckPair(a:Rect, b:Rect):void {
+        // check if pair already exists
+        var pairIndex:int = -1;
+        var containsPair:Boolean = pairs.some(function (element:Object, index:int, v:Vector.<Object>):Boolean {
+            var match:Boolean = (element.start == a && element.end == b) || (element.start == b && element.end == a);
+            //and if match found - remember index for further deletion
+            if (match)
+                pairIndex = index;
+            return match;
+        });
+        //if it's true - then remove pair
+        if (containsPair) {
+            pairs.splice(pairIndex, 1);
+        } else {
+            //otherwise -
+            pairs.push({start: a, end: b});
+        }
+    }
+
     public override function onMouseDown(event:MouseEvent):void {
-        var count:int = rects.length;
         selectedRectangle = null;
 		//find rectangle we intersect by mouse pointer.
         var rect:Rect = IntersectsPoint(event.localX, event.localY);
         if (rect != null) {
-			//if we're connecting rectangles - create a pair of them
+			//if we're connecting rectangles - create a pair of them/delete existing pair
             if (connectedRectangle && connectedRectangle != rect) {
-                pairs.push({start: rect, end: connectedRectangle});
+                CheckPair(rect, connectedRectangle);
                 connectedRectangle = null;
             } else
 			//or select it
